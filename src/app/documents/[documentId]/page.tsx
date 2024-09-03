@@ -27,12 +27,12 @@ export default function DocumentPage({
             <div className="flex justify-between items-center gap-20 py-6">
                 <h1 className="text-4xl font-bold">{document.title}</h1>
             </div>
-            <div className="flex">
-              <div className="bg-gray-900">
+            <div className="flex gap-10">
+              <div className="p-4 rounded bg-slate-800 flex-1">
                 {document.documentUrl != null && 
-                  <iframe src={document.documentUrl}></iframe>
-                } 
+                <iframe className="w-full" src={document.documentUrl}/>}
               </div>
+              <div className="w-[300px] bg-slate-800"></div>
             </div>
         </main>
     );
