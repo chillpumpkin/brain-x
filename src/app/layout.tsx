@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter as FontSans} from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import Header from "@/components/header";
@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,15 +22,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Providers>
-      <body className={cn(
-        "min-h-screen bg-background font-sans antialiased",
-        fontSans.variable
-      )}>
-        <Header />
-        {children}
+      <head>
+        {/* You might add other meta tags or links here */}
+      </head>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable
+        )}
+      >
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
       </body>
-      </Providers>
     </html>
   );
 }
