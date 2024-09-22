@@ -19,12 +19,11 @@ export default function ChatPanel({
         theme === "dark" ? "bg-neutral-850" : "bg-white"
       }`}
     >
-      <div className="flex flex-col gap-2 overflow-y-auto ">
+      <div className="flex flex-col gap-2 overflow-y-auto">
       {chats?.map(chat => (
             <DocTextArea isHuman={chat.isHuman} text={chat.text}/>
       ))}
       </div>
-
       <div className="flex gap-1 mt-auto p-3">
         <QuestionForm documentId={documentId}/>
       </div>

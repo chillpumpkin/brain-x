@@ -3,10 +3,10 @@ import { ConvexError, v } from "convex/values";
 import { api, internal } from "../convex/_generated/api";
 
 import OpenAI from "openai";
-console.log(process.env.OPENAI_KEY);
+
 const openai = new OpenAI({
-  apiKey:
-    process.env.OPENAI_KEY});
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export const generateUploadUrl = mutation(async (ctx) => {
   return await ctx.storage.generateUploadUrl();
@@ -125,15 +125,41 @@ export const askQuestion = action({
         model: "gpt-3.5-turbo",
       });
 
-      const response = chatCompletion.choices[0].message.content ?? "I don't know";
-      await ctx.runMutation(internal.chats.createChatRecord, {
-        documentId: args.documentId,
-        text: response,
-        tokenIdentifier: userId,
-        isHuman: false,
-      });
+    const response =
+      chatCompletion.choices[0].message.content ?? "I don't know";
+    await ctx.runMutation(internal.chats.createChatRecord, {
+      documentId: args.documentId,
+      text: response,
+      tokenIdentifier: userId,
+      isHuman: false,
+    });
 
     console.log(response);
     return response;
+  },
+});
+
+export const deleteDocument = mutation({
+  args: {
+    documentId: v.id("documents"),
+  },
+  async handler(ctx, args) {
+    const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
+
+    if (!userId) {
+      throw new ConvexError("Not authenticated");
+    }
+
+    const document = await ctx.db.get(args.documentId);
+
+    if (!document) {
+      throw new ConvexError("Document not found");
+    }
+
+    if (document.tokenIdentifier !== userId) {
+      throw new ConvexError("Not authorized");
+    }
+
+    await ctx.db.delete(args.documentId);
   },
 });
