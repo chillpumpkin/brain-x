@@ -14,7 +14,9 @@ const config: Config = {
   	extend: {
   		fontFamily: {
   			sans: ["var(--font-sans)", ...fontFamily.sans]
-  		},
+  		},      boxShadow: {
+        'glow': '0 0 10px rgba(255, 99, 71, 0.5), 0 0 20px rgba(255, 99, 71, 0.5), 0 0 30px rgba(255, 99, 71, 0.5), 0 0 40px rgba(255, 99, 71, 0.5)',
+      },
   		backgroundImage: {
   			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
   			'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'

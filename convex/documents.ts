@@ -1,12 +1,13 @@
-import { action, mutation, query } from "./_generated/server";
+import { action, internalAction, internalMutation, mutation, query } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
 import { api, internal } from "../convex/_generated/api";
 
 import OpenAI from "openai";
+import { embed } from "./notes";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+  apiKey: process.env.OPENAI_KEY
+  });
 
 export const generateUploadUrl = mutation(async (ctx) => {
   return await ctx.storage.generateUploadUrl();
@@ -55,6 +56,33 @@ export const getDocument = query({
   },
 });
 
+export const setDocumentEmbedding = internalMutation({
+  args: {
+    documentId: v.id("documents"),
+    embedding: v.array(v.number()),
+  },
+  async handler(ctx, args) {
+    await ctx.db.patch(args.documentId, {
+      embedding: args.embedding,
+    });
+  },
+});
+
+export const createDocumentEmbedding = internalAction({
+  args: {
+    documentId: v.id("documents"),
+    text: v.string(),
+  },
+  async handler(ctx, args) {
+    const embedding = await embed(args.text);
+
+    await ctx.runMutation(internal.documents.setDocumentEmbedding, {
+      documentId: args.documentId,
+      embedding,
+    });
+  },
+});
+
 export const createDocument = mutation({
   args: {
     title: v.string(),
@@ -67,10 +95,21 @@ export const createDocument = mutation({
       throw new ConvexError("Not authenticated");
     }
 
-    await ctx.db.insert("documents", {
+    const documentId = await ctx.db.insert("documents", {
       title: args.title,
       tokenIdentifier: userId,
       fileId: args.fileId,
+    });
+
+    const fileText = await ctx.storage.getUrl(args.fileId);
+
+    if (!fileText) {
+      return
+    }
+
+    ctx.scheduler.runAfter(0, internal.documents.createDocumentEmbedding, {
+      documentId: documentId,
+      text: fileText,
     });
   },
 });

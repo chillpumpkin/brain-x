@@ -8,7 +8,6 @@ import { Card, CardBody } from "@nextui-org/card";
 import { Tabs, Tab, Skeleton, Button } from "@nextui-org/react";
 import DocTextArea from "@/components/doc-text-area";
 import DeleteButton from "@/components/delete-button";
-import QuestionForm from "@/components/question-form";
 
 export default function DocumentPage({
   params,
@@ -66,8 +65,7 @@ export default function DocumentPage({
                       bottom: "0px", // Sticks to the bottom of the container
                       zIndex: 100, // Keeps it above other content
                     }}
-                  >
-                  </div>
+                  ></div>
                 </CardBody>
               </Card>
             </Tab>

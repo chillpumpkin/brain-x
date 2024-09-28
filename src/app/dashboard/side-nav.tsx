@@ -2,12 +2,21 @@
 
 import { usePathname } from "next/navigation";
 import { SideNavItem } from "./sidenav-item";
-import { FileStack, NotebookPen, Settings } from "lucide-react";
+import { FileStack, NotebookPen, Search, Settings } from "lucide-react";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 export default function SideNav() {
   const pathname = usePathname();
 
   return (
     <nav className="space-y-4">
+      <ul>
+        <SideNavItem
+          icon={Search}
+          isActive={pathname.endsWith("/dashboard/search")}
+          url={"/dashboard/search"}
+          title={"Search"}
+        />
+      </ul>
       <ul className="space-y-4">
         <SideNavItem
           icon={FileStack}
