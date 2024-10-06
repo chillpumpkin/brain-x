@@ -5,10 +5,26 @@ import Image from "next/image";
 import { api } from "../../../../convex/_generated/api";
 import DocumentCard from "./document-card";
 import UploadDocumentButton from "./upload-document-button";
+import { Spinner } from "@nextui-org/spinner";
 
 export default function Home() {
   const createDocument = useMutation(api.documents.createDocument);
   const documents = useQuery(api.documents.getDocuments);
+
+    // Handle loading state
+    if (documents === undefined) {
+      return (
+        <main className="w-full space-y-20">
+          <div className="flex justify-between items-center">
+            <h1 className="text-4xl font-bold">Notes</h1>
+            {/* Optionally, show CreateNoteButton here */}
+          </div>
+          <div className="flex justify-center items-center h-64">
+            <Spinner color="primary" size="lg" />
+          </div>
+        </main>
+      );
+    }
 
   return (
     <main className="space-y-6 w-full">

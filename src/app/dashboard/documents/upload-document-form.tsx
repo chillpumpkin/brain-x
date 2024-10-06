@@ -26,8 +26,6 @@ export default function UploadDocumentForm( {onUpload}: { onUpload: () => void }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // for posting the uploaded file to convex database
     const url  = await generateUploadUrl();
-    console.log("Generated upload URL", url);
-
     const result = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": values.file.type },

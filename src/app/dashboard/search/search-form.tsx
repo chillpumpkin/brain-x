@@ -24,7 +24,7 @@ const formSchema = z.object({
 export default function SearchForm({
   setResults,
 }: {
-    setResults: (notes: typeof api.search.searchAction._returnType) => void;
+  setResults: (notes: typeof api.search.searchAction._returnType) => void;
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

@@ -23,9 +23,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* You might add other meta tags or links here */}
-      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

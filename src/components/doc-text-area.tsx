@@ -13,7 +13,7 @@ const DocTextArea: React.FC<DocTextAreaProps> = ({
   src,
   text,
   color,
-  isHuman
+  isHuman,
 }) => {
   const [textContent, setTextContent] = useState<string>(text || "");
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -46,7 +46,7 @@ const DocTextArea: React.FC<DocTextAreaProps> = ({
     <Textarea
       ref={textAreaRef} // Use ref to get the textarea element
       readOnly
-      variant= {isHuman ? "flat" : "underlined"}
+      variant={isHuman ? "flat" : "underlined"}
       placeholder="Hey, I'm ready to answer all your questions!"
       size="lg"
       className="resize-none"
@@ -60,9 +60,7 @@ const DocTextArea: React.FC<DocTextAreaProps> = ({
       minRows={1}
       value={textContent}
       startContent={
-        src == null 
-        ? (!isHuman && <MessageSquareQuote />)
-        : <BookText />
+        src == null ? !isHuman && <MessageSquareQuote /> : <BookText />
       }
     />
   );

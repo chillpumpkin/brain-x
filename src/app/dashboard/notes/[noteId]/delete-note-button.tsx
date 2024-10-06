@@ -1,6 +1,5 @@
 import { Button } from "@nextui-org/button";
 import { Trash } from "lucide-react";
-import { deleteNote } from "../../../../../convex/notes";
 import { useMutation } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";

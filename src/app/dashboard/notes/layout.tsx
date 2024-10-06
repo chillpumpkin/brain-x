@@ -1,31 +1,58 @@
 "use client";
+
 import { useQuery } from "convex/react";
 import CreateNoteButton from "./create-note-button";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { useTheme } from "next-themes";
 import Image from "next/image";
+import { Spinner } from "@nextui-org/spinner";
+import { useUser, useClerk } from "@clerk/nextjs";
 
 export default function NotesLayout({ children }: { children: ReactNode }) {
-  const notes = useQuery(api.notes.getNotes);
-  const { noteId } = useParams<{ noteId: Id<"notes"> }>();
-  const { theme } = useTheme();
+  const { user } = useUser();
+  const { redirectToSignIn } = useClerk();
+  const router = useRouter();
 
-  const hasNotes = notes && notes.length !== 0;
+  useEffect(() => {
+    if (!user) {
+      // Redirect to sign-in page with the current path as redirectUrl
+      redirectToSignIn({ redirectUrl: window.location.href });
+    }
+  }, [user, redirectToSignIn, router]);
+
+  const notes = useQuery(api.notes.getNotes);
+  const params = useParams();
+  const noteId = params?.noteId;
+
+  // Handle loading state
+  if (notes === undefined) {
+    return (
+      <main className="w-full space-y-20">
+        <div className="flex justify-between items-center">
+          <h1 className="text-4xl font-bold">Notes</h1>
+        </div>
+        <div className="flex justify-center items-center h-64">
+          <Spinner size="lg" />
+        </div>
+      </main>
+    );
+  }
+
+  // Check if there are notes
+  const hasNotes = notes.length !== 0;
 
   return (
     <main className="w-full space-y-20">
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">Notes</h1>
-        {hasNotes && <CreateNoteButton />}
+        <CreateNoteButton />
       </div>
-      <div className="flex gap-12">
-        <ul className="space-y-2 w-[300px]">
-          {notes?.map((note) => (
+      <div className="flex flex-col md:flex-row ">
+        <ul className="space-y-2 w-full md:w-[300px]">
+          {notes.map((note) => (
             <li
               key={note._id}
               className={cn("text-base hover:text-purple-500", {
@@ -39,22 +66,15 @@ export default function NotesLayout({ children }: { children: ReactNode }) {
           ))}
         </ul>
         {hasNotes ? (
-          <div
-            className={cn(
-              "bg-gray-900 rounded-xl p-4 w-full h-[400px] border",
-              {
-                "bg-white": theme === "light",
-              }
-            )}
-          >
+          <div className="bg-gray-900 rounded-xl p-4 w-full h-auto border overflow-auto">
             {children}
           </div>
         ) : (
-          <div className="flex flex-col justify-center items-center gap-8">
-            <Image src="/notes.svg" alt="empty" width={200} height={200}/>
+          <div className="flex flex-col items-center gap-8">
+            <Image src="/notes.svg" alt="empty" width={200} height={200} />
             <p className="text-center text-lg mt-4">
-              You don't have any notes yet. Click the button above to create a
-              note.{" "}
+              You don't have any notes yet. Click the button below to create a
+              note.
             </p>
             <CreateNoteButton />
           </div>

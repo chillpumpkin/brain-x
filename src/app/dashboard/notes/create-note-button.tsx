@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Authenticated } from "convex/react";
-import { CirclePlus, Upload } from "lucide-react";
+import { CirclePlus } from "lucide-react";
 import CreateNoteForm from "./create-note-form";
 import { useToast } from "@/hooks/use-toast";
 

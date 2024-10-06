@@ -8,13 +8,7 @@ import { Input } from "@nextui-org/react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "./ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 
 const formSchema = z.object({
   text: z.string().min(1).max(1000),
@@ -42,7 +36,10 @@ export default function QuestionForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-1">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 flex flex-1"
+      >
         <FormField
           control={form.control}
           name="text"
@@ -51,7 +48,7 @@ export default function QuestionForm({
               <FormControl>
                 <div className="w-full">
                   <Input
-                    {...field} 
+                    {...field}
                     height={"62vh"}
                     variant="bordered"
                     endContent={<CircleArrowUp />}

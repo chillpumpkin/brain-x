@@ -65,7 +65,8 @@ export default function DocumentPage({
                       bottom: "0px", // Sticks to the bottom of the container
                       zIndex: 100, // Keeps it above other content
                     }}
-                  ></div>
+                  >
+                  </div>
                 </CardBody>
               </Card>
             </Tab>

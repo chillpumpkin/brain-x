@@ -9,7 +9,7 @@ import OpenAI from "openai";
 import { internal } from "./_generated/api";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 export const createNote = mutation({
@@ -130,7 +130,6 @@ export const deleteNote = mutation({
       throw new ConvexError("You must be logged in to create a note");
     }
 
-    console.log("Deleting note", args.noteId);
     const note = await ctx.db.get(args.noteId);
 
     if (!note) {

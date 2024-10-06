@@ -1,5 +1,5 @@
-import { FileStack, NotebookPen, Settings } from "lucide-react";
-import Link from "next/link";
+"use client";
+import { Authenticated } from "convex/react";
 import SideNav from "./side-nav";
 
 export default function DashboardLayout({
@@ -10,7 +10,9 @@ export default function DashboardLayout({
   return (
     <div className="flex gap-24 px-10 justify-self-end mx-auto pt-12">
       <SideNav />
-      <div className="flex-1 flex justify-center">{children}</div>
+      <div className="flex-1 flex justify-center">
+        <Authenticated>{children}</Authenticated>
+      </div>
     </div>
   );
 }

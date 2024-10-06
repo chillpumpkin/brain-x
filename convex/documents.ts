@@ -6,8 +6,8 @@ import OpenAI from "openai";
 import { embed } from "./notes";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_KEY
-  });
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export const generateUploadUrl = mutation(async (ctx) => {
   return await ctx.storage.generateUploadUrl();
@@ -173,7 +173,6 @@ export const askQuestion = action({
       isHuman: false,
     });
 
-    console.log(response);
     return response;
   },
 });
