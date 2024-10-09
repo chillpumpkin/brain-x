@@ -5,6 +5,12 @@ import { Unauthenticated, Authenticated } from "convex/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { Sixtyfour } from 'next/font/google';
+
+const convergence = Sixtyfour({
+  subsets: ['latin'],
+  weight: "400"
+});
 
 export default function Header() {
   const pathName = usePathname();
@@ -17,7 +23,9 @@ export default function Header() {
             <Image src="/logo.png" alt="logo" width={120} height={120} />
           </Link>
           <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
-            brainX
+          <header className={convergence.className}>
+      <h1>brainX</h1>
+    </header>
           </span>
         </div>
         <div>

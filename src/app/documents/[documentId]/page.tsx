@@ -19,7 +19,7 @@ export default function DocumentPage({
     documentId: params.documentId,
   });
 
-  if (!document) {
+  if (document == null || !document) {
     return <div>You don't have access to view this document.</div>;
   }
 

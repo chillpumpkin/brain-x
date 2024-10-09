@@ -1,30 +1,76 @@
-import React from "react";
-import {Card, CardFooter, Image, Button} from "@nextui-org/react";
-import Link from "next/link";
-import { Doc } from "../../../../convex/_generated/dataModel";
+"use client";
 
-export default function DocumentCard({document} : {document: Doc<'documents'>}) {
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { motion } from "framer-motion";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { useQuery } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { useUser } from "@clerk/clerk-react";
+import { useRouter } from "next/navigation";
+
+export default function DocumentCard({
+  documentId,
+}: {
+  documentId: Id<"documents">;
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+  const { user } = useUser();
+  const router = useRouter();
+
+  var document = useQuery(api.documents.getDocument, {
+    documentId: documentId,
+  });
+
+  const content = document?.documentUrl;
+
   return (
-    <Card 
-      isFooterBlurred
-      radius="lg"
-      className="border-none"
+    <motion.div
+      className="w-full max-w-md mx-auto"
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300, damping: 10 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
     >
-      <Image
-        alt="Random image"
-        className="object-cover rounded-lg"
-        height={200}
-        src="https://random-image-pepebigotes.vercel.app/api/random-image"
-        width="100%"
-      />
-      <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10 rounded-lg">
-        <p className="text-tiny text-white/80 rounded-full">{document.title}</p>
-        <Button className="text-tiny text-white bg-black/20 rounded-lg" variant="flat" color="default" size="sm">
-        <Link href={`/documents/${document._id}`}> 
-          View more
-        </Link>
-        </Button>
-      </CardFooter>
-    </Card>
+      <Card
+        className="overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 text-white shadow-lg"
+        onClick={() => {
+          router.push(`/documents/${documentId}`);
+        }}
+      >
+        <CardHeader className="border-b border-gray-700">
+          <CardTitle className="text-2xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+            {document?.title}
+          </CardTitle>
+          <div className="flex items-center mt-2 space-x-2">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback className="bg-gray-700 text-gray-200">
+                {(user?.firstName?.substring(0, 1) ?? "") +
+                  " " +
+                  (user?.lastName?.substring(0, 1) ?? "")}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sm font-medium text-gray-300">
+              {(user?.firstName ?? "") + " " + (user?.lastName ?? "")}
+            </span>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <ScrollArea className="h-64 p-4">
+            <p className="text-sm leading-relaxed">{content}</p>
+          </ScrollArea>
+        </CardContent>
+        <div className="px-4 py-2 bg-gray-800 bg-opacity-50">
+          <motion.div
+            className="h-1 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full"
+            initial={{ width: "0%" }}
+            animate={{ width: isHovered ? "100%" : "0%" }}
+            transition={{ duration: 0.5 }}
+          />
+        </div>
+      </Card>
+    </motion.div>
   );
 }

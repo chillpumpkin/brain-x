@@ -7,7 +7,6 @@ import {
   BarChart2,
   Users,
   FileText,
-  Settings,
   Menu,
   X,
 } from "lucide-react";
@@ -17,7 +16,6 @@ const navItems = [
   { icon: BarChart2, label: "Analytics", href: "#analytics" },
   { icon: Users, label: "Customers", href: "#customers" },
   { icon: FileText, label: "Reports", href: "#reports" },
-  { icon: Settings, label: "Settings", href: "#settings" },
 ];
 
 export default function SideBar() {

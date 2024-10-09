@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { SideNavItem } from "./sidenav-item";
-import { FileStack, NotebookPen, Search, Settings } from "lucide-react";
+import { FileStack, NotebookPen, Search } from "lucide-react";
 export default function SideNav() {
   const pathname = usePathname();
 
@@ -30,14 +30,6 @@ export default function SideNav() {
           isActive={pathname.endsWith("/dashboard/notes")}
           url={"/dashboard/notes"}
           title={"Notes"}
-        />
-      </ul>
-      <ul>
-        <SideNavItem
-          icon={Settings}
-          isActive={pathname.endsWith("/dashboard/settings")}
-          url={"/dashboard/settings"}
-          title={"Settings"}
         />
       </ul>
     </nav>

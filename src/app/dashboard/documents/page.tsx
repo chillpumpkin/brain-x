@@ -3,9 +3,9 @@
 import { Authenticated, useMutation, useQuery } from "convex/react";
 import Image from "next/image";
 import { api } from "../../../../convex/_generated/api";
-import DocumentCard from "./document-card";
 import UploadDocumentButton from "./upload-document-button";
 import { Spinner } from "@nextui-org/spinner";
+import ElegantDocumentCard from "./document-card";
 
 export default function Home() {
   const createDocument = useMutation(api.documents.createDocument);
@@ -36,8 +36,8 @@ export default function Home() {
           )}
         </Authenticated>
       </div>
-      <div className="grid grid-cols-4 gap-8">
-        {documents?.map((doc) => <DocumentCard key={doc._id} document={doc} />)}
+      <div className="grid grid-cols-4 gap-6">
+        {documents?.map((doc) => <ElegantDocumentCard documentId={doc._id} />)}
       </div>
 
       {documents?.length === 0 && (
